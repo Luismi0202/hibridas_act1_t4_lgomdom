@@ -1,0 +1,64 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Personajes
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Personajes</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="container">
+    <div class="image-container">
+      <img src="https://elcomercio.pe/resizer/v2/VLK3R6K3TZBODL7L7G2H7KK2LM.png?auth=3b9ee42737c1a53142f8f462821146741b364f0edddcb8835b800b3f08f57af1&width=1200&height=800&quality=75&smart=true" alt="Personajes" />
+    </div>
+
+    <ion-button expand="block" (click)="getPersonajes()" [disabled]="loading">
+      {{ loading ? 'Cargando...' : 'Obtener Personajes' }}
+    </ion-button>
+
+    <ion-button expand="block" color="secondary" (click)="goToHome()">
+      Volver a Terremotos
+    </ion-button>
+
+    <ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
+
+    <div *ngIf="error" class="error-message">
+      {{ error }}
+    </div>
+
+    <ion-card *ngFor="let personaje of personajes">
+      <ion-card-header>
+        <ion-card-title>{{ personaje.nombre }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p><strong>ID:</strong> {{ personaje.id }}</p>
+        <p><strong>Tripulación:</strong> {{ personaje.tripulacion }}</p>
+        
+        <div *ngIf="personaje.habilidades && personaje.habilidades.length > 0">
+          <p><strong>Habilidades:</strong></p>
+          <ion-list>
+            <ion-item *ngFor="let habilidad of personaje.habilidades">
+              <ion-label>
+                <h3>{{ habilidad.nombre }}</h3>
+                <p>{{ habilidad.descripcion }}</p>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </div>
+        <div *ngIf="!personaje.habilidades || personaje.habilidades.length === 0">
+          <p><em>Sin habilidades registradas</em></p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <div *ngIf="personajes.length === 0 && !loading && !error" class="no-data">
+      Presiona el botón para obtener los personajes de tu base de datos
+    </div>
+  </div>
+</ion-content>

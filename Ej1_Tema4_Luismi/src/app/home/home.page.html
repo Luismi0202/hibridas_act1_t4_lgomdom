@@ -1,0 +1,61 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Terremotos
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Terremotos</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="container">
+    <div class="image-container">
+      <img src="https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?w=800" alt="Planeta Tierra" />
+    </div>
+
+    <ion-button expand="block" (click)="getLatestEarthquake()" [disabled]="loading">
+      {{ loading ? 'Cargando...' : 'Obtener Último Terremoto' }}
+    </ion-button>
+
+    <ion-button expand="block" color="secondary" (click)="goToPersonajes()">
+      Ir a Personajes
+    </ion-button>
+
+    <ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
+
+    <div *ngIf="error" class="error-message">
+      {{ error }}
+    </div>
+
+    <ion-card *ngIf="latestEarthquake">
+      <ion-card-header>
+        <ion-card-title>{{ latestEarthquake.properties.title }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p><strong>Magnitud:</strong> {{ latestEarthquake.properties.mag }}</p>
+        <p><strong>Lugar:</strong> {{ latestEarthquake.properties.place }}</p>
+        <p><strong>Fecha:</strong> {{ getDate(latestEarthquake.properties.time) }}</p>
+        <p><strong>Tipo:</strong> {{ latestEarthquake.properties.type }}</p>
+        <p><strong>Profundidad:</strong> {{ latestEarthquake.geometry.coordinates[2] }} km</p>
+        <p><strong>Coordenadas:</strong></p>
+        <p>Latitud: {{ latestEarthquake.geometry.coordinates[1] }}, Longitud: {{ latestEarthquake.geometry.coordinates[0] }}</p>
+        <p><strong>Estado:</strong> {{ latestEarthquake.properties.status }}</p>
+        <p *ngIf="latestEarthquake.properties.tsunami === 1" class="tsunami-warning">
+          ⚠️ ALERTA DE TSUNAMI
+        </p>
+        <a [href]="latestEarthquake.properties.url" target="_blank" rel="noopener">
+          Ver más detalles
+        </a>
+      </ion-card-content>
+    </ion-card>
+
+    <div *ngIf="!latestEarthquake && !loading && !error" class="no-data">
+      Presiona el botón para obtener información del último terremoto registrado
+    </div>
+  </div>
+</ion-content>

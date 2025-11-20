@@ -1,0 +1,8 @@
+{
+  "/api": {
+    "target": "https://onepiece-database-luismi0202.onrender.com",
+    "secure": true,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}
